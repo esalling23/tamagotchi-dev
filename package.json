@@ -1,0 +1,25 @@
+{
+  "name": "tamagotchiBot",
+  "version": "0.0.1",
+  "description": "Tamagotchi Bot for Escape the Room ARG",
+  "main": "bot.js",
+  "author": "Erica Salling and Andrew Barrett",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "body-parser": "^1.18.2",
+    "request": "^2.83.0",
+    "botkit": "^0.6.8",
+    "node-env-file": "^0.1.8",
+    "cookie-parser": "^1.4.3",
+    "express-hbs": "^1.0.4",
+    "@slack/client": "^3.16.0",
+    "underscore": "^1.8.3",
+    "botkit-storage-mongo": "^1.0.7",
+    "botkit-studio-sdk": "^1.0.8",
+    "random-emoji": "^1.0.2"
+  }, 
+  "engines": { "node": "8.x" }
+}
