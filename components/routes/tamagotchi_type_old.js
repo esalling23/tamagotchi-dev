@@ -14,7 +14,7 @@ function isUser(member) {
 module.exports = function(webserver, controller) {
   
 
-  webserver.get("/pickup/:type/:player/:team", function(req, res) {
+  webserver.get("/pickupOLD/:type/:player/:team", function(req, res) {
         
     controller.storage.teams.get(req.params.team, function(err, team) {
       

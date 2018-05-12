@@ -39,7 +39,10 @@ webserver.get('/', function(req, res){
     domain: req.get('host'),
     protocol: req.protocol,
     glitch_domain:  process.env.domain,
-    layout: 'layouts/default'
+    layout: 'layouts/default', 
+    data: {
+      clientId: process.env.clientId
+    }
   });
 })
 // Set up a simple storage backend for keeping a record of customers

@@ -26,83 +26,41 @@ module.exports = function(controller) {
         // Make sure we have the studio token
         if (controller.config.studio_token) {
           // open im with user that added this app
-          bot.api.im.open({user: userId }, function(err, direct_message) {
-            if (err) {
-                debug('Error sending onboarding message:', err);
-            } else {
 
-              console.log(bot.identity.team_id, state); 
-              
-              controller.storage.teams.get(bot.identity.team_id, function(err, team) {
+          console.log(bot.identity.team_id, state); 
 
-                var web = new WebClient(team.bot.token);
-                // list out users to add to team 
-                // only if team users are empty - sanity check
-                web.users.list({}, function (err, users) {
-                  
-                  if (!team.users || team.users.length <= 0) {
-                    team.users = [];
+          controller.storage.teams.get(bot.identity.team_id, function(err, team) {
 
-                    _.each(users.members, function(user) {
-                      if (isUser(user)) {
-                        var user = {
-                          userId: user.id, 
-                          name: user.name
-                        }
-                        
-                        team.users.push(user);
-                      }
-                    }); 
+            var web = new WebClient(team.bot.token);
+            // list out users to add to team 
+            // only if team users are empty - sanity check
+            web.users.list({}, function (err, users) {
 
-                  }
-                  
-                  // Map through the users
-                  // Store creature and set them as having started
-                  team.users = _.map(team.users, function(user) {
-                    if (state && userId == user.userId) {
-                      user.tamagotchi_type = creature;
-                      user.tamagotchi_started = true;
-                      thisUser = user;
+              if (!team.users || team.users.length <= 0) {
+                team.users = [];
+
+                _.each(users.members, function(user) {
+                  if (isUser(user)) {
+                    var user = {
+                      userId: user.id, 
+                      name: user.name
                     }
-                    return user;
-                  });
-                  
-  
-                  // save the team
-                  controller.storage.teams.save(team, function(err, saved) {
-                    console.log(saved);
-                    
-                    var data = {
-                      puzzle: creature, 
-                      user: thisUser, 
-                      team: saved, 
-                      codeType: "tamagotchi_egg"
-                    };
 
-                    // post in the gamelog
-                    request.post({ url: 'https://escape-room-dev.glitch.me/tamagotchi_gamelog', form: data }, function(err, req, body) {
+                    team.users.push(user);
+                  }
+                }); 
 
-                    });
-                    
-                    // grab and send out onboarding script
-                    controller.studio.get(bot, 'onboarding', userId, direct_message.channel.id).then(function(convo) {
+              }
 
-                      convo.icon_url = "http://vanguardseattle.com/wp-content/uploads/2016/05/egg-emoji-unicode.jpg";
-                      var value = convo.threads.default[0].attachments[0].actions[0].value + " " + creature;
+              // save the team
+              controller.storage.teams.save(team, function(err, saved) {
+                console.log(saved);
 
-                      convo.threads.default[0].attachments[0].actions[0].value = value;
-
-                      console.log(value, convo.threads.default[0].attachments[0].actions[0].value);
-                      convo.activate();
-                    });
-                    
-                  });
-                  
-                });
               });
-              
-            }
+
+            });
           });
+              
         } 
     });
 

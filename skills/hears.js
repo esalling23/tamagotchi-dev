@@ -76,6 +76,8 @@ module.exports = function(controller) {
       
       var thisUser = _.findWhere(res.users, { userId: message.user });
       
+      if (!thisUser.tamagotchi_started) return;
+      
       controller.dataStore(message, "chat");
       
       console.log("anything");
