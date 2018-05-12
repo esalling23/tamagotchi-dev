@@ -18,9 +18,13 @@ module.exports = function(controller) {
     console.log(event.original_message);
     
     if (type == "button") {
+      var value = event.actions[0].value ? event.actions[0].value : event.actions[0].selected_options[0].value;
+      var attachment = event.original_message.attachments[event.attachment_id - 1];
+      var button = _.findWhere(attachment.actions, { value: value });
+
       dataEvent.type = event.actions[0].type;
       dataEvent.action = event.actions[0].name;
-      dataEvent.btnText = event.actions[0].text;
+      dataEvent.btnText = button.text;
       dataEvent.value = event.actions[0].value ? event.actions[0].value : event.actions[0].selected_options[0].value;
       dataEvent.from = event.callback_id;
     } else if (type == "chat") {
